@@ -8,9 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 
-packages = [
-  { include = "gendiff" },
-]
+[[tool.poetry.packages]]
+include = "gendiff"
 
 [build-system]
 requires = ["poetry-core"]
