@@ -41,9 +41,7 @@ jobs:
         run: poetry run pytest --cov=gendiff --cov-report=xml
 
       - name: After build - Code Climate
-        run: ./cc-test-reporter after-build --exit-code $?
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: ./cc-test-reporter after-build --exit-code $? --id ${{ secrets.CC_TEST_REPORTER_ID }}
 
       - name: Run linter
         run: poetry run flake8 .
