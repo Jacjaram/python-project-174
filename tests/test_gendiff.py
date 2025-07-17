@@ -10,9 +10,13 @@ def test_generate_diff():
   + timeout: 20
   + verbose: true
 }'''
-    result = generate_diff('file1.json', 'file2.json')
+    result = generate_diff('test_file1.json', 'test_file2.json')
     assert result == expected
 
+def test_equal():
+    result = generate_diff('test_file1.json', 'test_file1 copy.json')
+    assert result == '{}'
+    
 # def test_emptys_files_generate_diff():
 #     expected = '''{
 # }'''
