@@ -1,7 +1,10 @@
 from gendiff.scripts.gendiff import generate_diff
 
 
-def test_generate_diff():
+def test_generate_diff():    
+    dir_path = os.path.dirname(__file__)
+    file1 = os.path.join(dir_path, 'test_file1.json')
+    file2 = os.path.join(dir_path, 'test_file2.json')
     expected = '''{
   - follow: false
     host: "hexlet.io"
@@ -10,12 +13,17 @@ def test_generate_diff():
   + timeout: 20
   + verbose: true
 }'''
-    result = generate_diff('test_file1.json', 'test_file2.json')
+    result = generate_diff(file1, file2)
     assert result == expected
 
+
 def test_equal():
-    result = generate_diff('test_file1.json', 'test_file1 copy.json')
-    assert result == '{}'
+    dir_path = os.path.dirname(__file__)
+    file1 = os.path.join(dir_path, 'test_file1.json')
+    file3 = os.path.join(dir_path, 'test_file1 copy.json')
+    result = generate_diff(file1, file3)
+    assert result == '{}', "Los archivos iguales deberían producir una diferencia vacía"
+    
     
 # def test_emptys_files_generate_diff():
 #     expected = '''{
