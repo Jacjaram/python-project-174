@@ -38,7 +38,7 @@ jobs:
         run: ./cc-test-reporter before-build
 
       - name: Run tests with coverage
-        run: poetry run pytest --cov=your_package --cov-report=xml
+        run: poetry run pytest --cov=gendiff --cov-report=xml
 
       - name: After build - Code Climate
         run: ./cc-test-reporter after-build --exit-code $?
