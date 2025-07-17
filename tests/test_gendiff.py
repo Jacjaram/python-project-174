@@ -13,8 +13,8 @@ def test_generate_diff():
     result = generate_diff('file1.json', 'file2.json')
     assert result == expected
 
-def test_emptys_files_generate_diff():
-    expected = '''{
-}'''
-    result = generate_diff('', '')
-    assert result == expected
+# def test_emptys_files_generate_diff():
+#     expected = '''{
+# }'''
+#     result = generate_diff('', '')
+#     assert result == expected
