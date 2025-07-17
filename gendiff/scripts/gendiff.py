@@ -3,9 +3,6 @@ import json
 
 
 def main():
-    import sys
-    sys.argv = ["gendiff.py", "file1.json", "file2.json"]
-
     parser = argparse.ArgumentParser(
         description="Compares two configuration files and shows a difference."
     )
@@ -21,8 +18,10 @@ def main():
 def generate_diff(file_path1, file_path2):
     with open(file_path1) as f1:
         file1 = json.load(f1)
+        print(file1)
     with open(file_path2) as f2:
         file2 = json.load(f2)
+        print(file2)
 
     diff = {}
     agregados = set(file2.keys()) - set(file1.keys())
@@ -32,6 +31,7 @@ def generate_diff(file_path1, file_path2):
     for i in claves_comunes:
         if file1[i] == file2[i]:
             diff.update({i: file1[i]})
+            
         else:
             eliminados.add(i)
             agregados.add(i)
@@ -58,6 +58,7 @@ def generate_diff(file_path1, file_path2):
         lineas.append(f"{prefijo}{clave}: {json.dumps(valor)}")
     lineas.append("}")
     return "\n".join(lineas)
+
 
 
 if __name__ == "__main__":

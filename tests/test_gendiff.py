@@ -19,15 +19,15 @@ def test_generate_diff():
 
 
 def test_equal():
+    expected = '''{
+    follow: false
+    host: "hexlet.io"
+    proxy: "123.234.53.22"
+    timeout: 50
+}'''
     dir_path = os.path.dirname(__file__)
     file1 = os.path.join(dir_path, 'test_file1.json')
-    file3 = os.path.join(dir_path, 'test_file1 copy.json')
+    file3 = os.path.join(dir_path, 'test_file1_copy.json')
     result = generate_diff(file1, file3)
-    assert result == '{}', "Los archivos iguales deberían producir una diferencia vacía"
+    assert result == expected
     
-    
-# def test_emptys_files_generate_diff():
-#     expected = '''{
-# }'''
-#     result = generate_diff('', '')
-#     assert result == expected
