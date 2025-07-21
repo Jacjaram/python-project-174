@@ -5,39 +5,54 @@ on:
   pull_request:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-
-      - name: Configure PATH
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python-version: '3.12'
 
       - name: Install dependencies
-        run: poetry install
+        run: |
+          pip install uv
+          make install
 
+      # Descargar y preparar cc-test-reporter
+      - name: Download Code Climate Test Reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -o ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+
+      # Preparar reporte antes de pruebas
       - name: Before build - Code Climate
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: ./cc-test-reporter before-build
 
-      - name: Run tests with coverage
-        run: poetry run pytest --cov=gendiff --cov-report=xml
+      # Ejecutar pruebas y cobertura
+      - name: Run test coverage
+        run: make test-coverage
 
+      # Enviar reporte a Code Climate
       - name: After build - Code Climate
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: ./cc-test-reporter after-build --exit-code $?
 
-      - name: Run linter
-        run: poetry run flake8 .
+      - name: Run linter and pytest
+        run: make check
+
+      - name: SonarQubeScan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          args: >
+            -Dsonar.projectKey=hexlet-boilerplates_python-package
+            -Dsonar.organization=hexlet-boilerplates
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+
