@@ -4,8 +4,8 @@ from gendiff.scripts.gendiff import generate_diff
 
 def test_generate_diff():    
     dir_path = os.path.dirname(__file__)
-    file1 = os.path.join(dir_path, 'test_file1.json')
-    file2 = os.path.join(dir_path, 'test_file2.json')
+    file1 = os.path.join(dir_path, 'fixtures', 'test_file1.json')
+    file2 = os.path.join(dir_path, 'fixtures', 'test_file2.json')
     expected = '''{
   - follow: false
     host: "hexlet.io"
@@ -26,8 +26,8 @@ def test_equal():
     timeout: 50
 }'''
     dir_path = os.path.dirname(__file__)
-    file1 = os.path.join(dir_path, 'test_file1.json')
-    file3 = os.path.join(dir_path, 'test_file1_copy.json')
+    file1 = os.path.join(dir_path, 'fixtures', 'test_file1.json')
+    file3 = os.path.join(dir_path, 'fixtures', 'test_file1_copy.json')
     result = generate_diff(file1, file3)
     assert result == expected
     
