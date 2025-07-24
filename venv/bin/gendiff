@@ -1,0 +1,6 @@
+#!/home/jacjaram/codica/Proyectos Codica/Proyecto2/python-project-174/venv/bin/python
+import sys
+from gendiff.scripts.gendiff import main
+
+if __name__ == '__main__':
+    sys.exit(main())
