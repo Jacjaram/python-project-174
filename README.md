@@ -18,3 +18,18 @@ git clone https://github.com/Jacjaram/python-project-174.git
 cd python-project-174
 poetry install# trigger
 
+# 📽 Ejemplo de uso
+
+[![asciicast](https://asciinema.org/a/96TApEsGfutmM54f7i9T1VkzM.svg)](https://asciinema.org/a/96TApEsGfutmM54f7i9T1VkzM)
+
+```bash
+$ gendiff file1.json file2.json
+{
+  - follow: false
+    host: "hexlet.io"
+  - proxy: "123.234.53.22"
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}
+
