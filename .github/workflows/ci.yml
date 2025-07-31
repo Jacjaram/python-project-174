@@ -1,3 +1,54 @@
+# name: Python CI
+
+# on:
+#   push:
+#   pull_request:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.12'
+#       - name: Install Poetry
+#         run: |
+#           curl -sSL https://install.python-poetry.org | python3 -
+#           echo "$HOME/.local/bin" >> $GITHUB_PATH  # Agrega Poetry al PATH
+#       - name: Install dependencies
+#         run: |
+#           pip install uv
+#           make install
+
+#       # Descargar y preparar cc-test-reporter
+#       - name: Download Code Climate Test Reporter
+#         run: |
+#           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -o ./cc-test-reporter
+#           chmod +x ./cc-test-reporter
+
+#       # Preparar reporte antes de pruebas
+#       - name: Before build - Code Climate
+#         env:
+#           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+#         run: ./cc-test-reporter before-build
+
+#       # Ejecutar pruebas y cobertura
+#       - name: Run test coverage
+#         run: make test-coverage
+
+#       # Enviar reporte a Code Climate
+#       - name: After build - Code Climate
+#         env:
+#           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+#         run: ./cc-test-reporter after-build --exit-code $?
+
+#       - name: Run linter and pytest
+#         run: make check
+
 name: Python CI
 
 on:
@@ -7,6 +58,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}  # 👈 Añade esto a nivel de job
 
     steps:
       - uses: actions/checkout@v4
@@ -15,37 +68,30 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Agrega Poetry al PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
       - name: Install dependencies
         run: |
           pip install uv
           make install
 
-      # Descargar y preparar cc-test-reporter
       - name: Download Code Climate Test Reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 -o ./cc-test-reporter
           chmod +x ./cc-test-reporter
 
-      # Preparar reporte antes de pruebas
       - name: Before build - Code Climate
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: ./cc-test-reporter before-build
 
-      # Ejecutar pruebas y cobertura
       - name: Run test coverage
-        run: make test-coverage
+        run: make test-coverage  # 👈 Ahora tendrá acceso a CC_TEST_REPORTER_ID
 
-      # Enviar reporte a Code Climate
       - name: After build - Code Climate
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: ./cc-test-reporter after-build --exit-code $?
 
       - name: Run linter and pytest
         run: make check
-
