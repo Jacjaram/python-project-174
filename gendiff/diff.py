@@ -5,38 +5,66 @@ import json
 def generate_diff(file_path1, file_path2):
     file1 = parse_file(file_path1)
     file2 = parse_file(file_path2)
+    diff = build_diff(file1, file2)
+    return format_diff(diff)
 
+
+def build_diff(data1, data2):
     diff = {}
-    agregados = set(file2.keys()) - set(file1.keys())
-    eliminados = set(file1.keys()) - set(file2.keys())
-    claves_comunes = set(file1.keys()) & set(file2.keys())
+    keys = sorted(set(data1.keys()) | set(data2.keys()))
+    for key in keys:
 
-    for i in claves_comunes:
-        if file1[i] == file2[i]:
-            diff.update({i: file1[i]})
+        if key not in data1:
+            diff[f'+ {key}'] = data2[key]
+
+        elif key not in data2:
+            diff[f'- {key}'] = data1[key]
         else:
-            eliminados.add(i)
-            agregados.add(i)
+            val1 = data1[key]
+            val2 = data2[key]
 
-    diff.update({f'- {k}': file1[k] for k in eliminados if k in file1})
-    diff.update({f'+ {k}': file2[k] for k in agregados if k in file2})
+            if isinstance(val1, dict) and isinstance(val2, dict):
+                children = build_diff(val1, val2)
+                diff[f'  {key}'] = children
 
-    def clave_sin_prefijo(clave):
-        return clave[2:] if clave.startswith(('+ ', '- ')) else clave
+            elif val1 == val2:
+                diff[f'  {key}'] = val1
+            else:
+                diff[f'- {key}'] = val1
+                diff[f'+ {key}'] = val2
 
-    diff_ordenado = dict(sorted(diff.items(),
-                                key=lambda item: clave_sin_prefijo(item[0])))
-    lineas = ["{"]
-    for clave, valor in diff_ordenado.items():
-        prefijo = "  "
-        if clave.startswith('- '):
-            prefijo = "  - "
-            clave = clave[2:]
-        elif clave.startswith('+ '):
-            prefijo = "  + "
-            clave = clave[2:]
+    return diff
+
+
+def format_diff(diff, depth=1):
+    indent = '    ' * (depth - 1)
+    lines = ['{']
+
+    for key, value in diff.items():
+        if key.startswith('- '):
+            prefix = '  - '
+            real_key = key[2:]
+        elif key.startswith('+ '):
+            prefix = '  + '
+            real_key = key[2:]
         else:
-            prefijo = "    "
-        lineas.append(f"{prefijo}{clave}: {json.dumps(valor)}")
-    lineas.append("}")
-    return "\n".join(lineas)
+            prefix = '    '
+            real_key = key.strip()
+
+        if isinstance(value, dict):
+            formatted_value = format_diff(value, depth + 1)
+        else:
+            if isinstance(value, str):
+
+                if value == "":
+                    lines.append(f"{indent}{prefix}{real_key}:")
+                    continue  # saltar agregar línea al final para no repetir
+                else:
+                    formatted_value = value
+            else:
+                formatted_value = json.dumps(value)
+
+        lines.append(f"{indent}{prefix}{real_key}: {formatted_value}")
+
+    lines.append(indent + '}')
+    return '\n'.join(lines)
