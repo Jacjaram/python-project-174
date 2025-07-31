@@ -1,0 +1,94 @@
+{
+  "ci_service": {
+    "branch": "main",
+    "build_identifier": "",
+    "build_url": "",
+    "commit_sha": "019a64c89353d0e40534b2cf17c04eb663430c43",
+    "committed_at": 1753983403,
+    "name": ""
+  },
+  "environment": {
+    "gem_version": "",
+    "package_version": "",
+    "pwd": "/home/jacjaram/codica/Proyectos Codica/Proyecto2/python-project-174",
+    "prefix": "/home/jacjaram/codica/Proyectos Codica/Proyecto2/python-project-174",
+    "rails_root": "",
+    "reporter_version": "0.11.1",
+    "simplecov_root": ""
+  },
+  "git": {
+    "branch": "main",
+    "head": "019a64c89353d0e40534b2cf17c04eb663430c43",
+    "committed_at": 1753983403
+  },
+  "covered_percent": 88.57142857142857,
+  "covered_strength": 0,
+  "line_counts": {
+    "missed": 8,
+    "covered": 62,
+    "total": 70
+  },
+  "source_files": [
+    {
+      "blob_id": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "coverage": "[]",
+      "covered_percent": 0,
+      "covered_strength": 0,
+      "line_counts": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "name": "gendiff/__init__.py"
+    },
+    {
+      "blob_id": "3fa5492428f367e0a4d408322e2ec61403633119",
+      "coverage": "[1,1,null,null,1,1,1,1,1,null,null,1,1,1,1,null,1,1,null,1,1,null,1,1,null,1,1,1,null,1,1,null,1,1,null,1,null,null,1,1,1,null,1,1,1,1,1,1,1,null,1,1,null,1,1,null,1,null,1,1,1,null,1,null,1,null,1,null,1,1]",
+      "covered_percent": 100,
+      "covered_strength": 1,
+      "line_counts": {
+        "missed": 0,
+        "covered": 48,
+        "total": 48
+      },
+      "name": "gendiff/diff.py"
+    },
+    {
+      "blob_id": "1fe243179617968d2e7c11c2ac15961294445406",
+      "coverage": "[1,1,1,null,null,1,1,1,1,1,1,1,null,0]",
+      "covered_percent": 90.9090909090909,
+      "covered_strength": 0.9090909090909091,
+      "line_counts": {
+        "missed": 1,
+        "covered": 10,
+        "total": 11
+      },
+      "name": "gendiff/parser.py"
+    },
+    {
+      "blob_id": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "coverage": "[]",
+      "covered_percent": 0,
+      "covered_strength": 0,
+      "line_counts": {
+        "missed": 0,
+        "covered": 0,
+        "total": 0
+      },
+      "name": "gendiff/scripts/__init__.py"
+    },
+    {
+      "blob_id": "55beb413e1f445645def55d59379317804aa63c5",
+      "coverage": "[1,1,null,null,1,0,null,null,0,0,null,0,null,0,0,null,null,1,0]",
+      "covered_percent": 36.36363636363637,
+      "covered_strength": 0.36363636363636365,
+      "line_counts": {
+        "missed": 7,
+        "covered": 4,
+        "total": 11
+      },
+      "name": "gendiff/scripts/gendiff.py"
+    }
+  ],
+  "repo_token": ""
+}
