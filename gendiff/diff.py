@@ -2,11 +2,11 @@ from gendiff.parser import parse_file
 import json
 
 
-def generate_diff(file_path1, file_path2):
+def generate_diff(file_path1, file_path2, format_name='stylish'):
     file1 = parse_file(file_path1)
     file2 = parse_file(file_path2)
     diff = build_diff(file1, file2)
-    return format_diff(diff)
+    return format_diff(diff, format_name)
 
 
 def build_diff(data1, data2):
@@ -36,7 +36,7 @@ def build_diff(data1, data2):
     return diff
 
 
-def format_diff(diff, depth=1):
+def format_diff(diff, format_name, depth=1):
     indent = '    ' * (depth - 1)
     lines = ['{']
 
@@ -52,7 +52,8 @@ def format_diff(diff, depth=1):
             real_key = key.strip()
 
         if isinstance(value, dict):
-            formatted_value = format_diff(value, depth + 1)
+            formatted_value = format_diff(value, format_name, depth + 1)
+            
         else:
             if isinstance(value, str):
 
