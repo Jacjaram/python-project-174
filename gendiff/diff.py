@@ -9,31 +9,40 @@ def generate_diff(file_path1, file_path2, format_name='stylish'):
     return format_diff(diff, format_name)
 
 
+# def build_diff(data1, data2):
+#     diff = {}
+#     keys = sorted(set(data1.keys()) | set(data2.keys()))
+#     for key in keys:
+
+#         if key not in data1:
+#             diff[f'+ {key}'] = data2[key]
+
+#         elif key not in data2:
+#             diff[f'- {key}'] = data1[key]
+#         else:
+#             val1 = data1[key]
+#             val2 = data2[key]
+
+#             if isinstance(val1, dict) and isinstance(val2, dict):
+#                 children = build_diff(val1, val2)
+#                 diff[f'  {key}'] = children
+
+#             elif val1 == val2:
+#                 diff[f'  {key}'] = val1
+#             else:
+#                 diff[f'- {key}'] = val1
+#                 diff[f'+ {key}'] = val2
+
+#     return diff
+
 def build_diff(data1, data2):
+    print(type(data1))
+    print(type(data2))
     diff = {}
     keys = sorted(set(data1.keys()) | set(data2.keys()))
-    for key in keys:
 
-        if key not in data1:
-            diff[f'+ {key}'] = data2[key]
-
-        elif key not in data2:
-            diff[f'- {key}'] = data1[key]
-        else:
-            val1 = data1[key]
-            val2 = data2[key]
-
-            if isinstance(val1, dict) and isinstance(val2, dict):
-                children = build_diff(val1, val2)
-                diff[f'  {key}'] = children
-
-            elif val1 == val2:
-                diff[f'  {key}'] = val1
-            else:
-                diff[f'- {key}'] = val1
-                diff[f'+ {key}'] = val2
-
-    return diff
+    # for key in keys:
+        
 
 
 def format_diff(diff, format_name, depth=1):
