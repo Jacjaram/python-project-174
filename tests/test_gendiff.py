@@ -3,7 +3,7 @@ import subprocess
 from gendiff.scripts.gendiff import generate_diff
 
 
-def test_generate_diff():    
+def test_generate_diff():
     dir_path = os.path.dirname(__file__)
     file1 = os.path.join(dir_path, 'fixtures', 'test_file1.json')
     file2 = os.path.join(dir_path, 'fixtures', 'test_file2.json')
@@ -88,7 +88,8 @@ def test_equal():
     result = generate_diff(file1, file3)
     assert result == expected
 
-def test_yaml_generate_diff():    
+
+def test_yaml_generate_diff():
     dir_path = os.path.dirname(__file__)
     file1 = os.path.join(dir_path, 'fixtures', 'test_file1.yml')
     file2 = os.path.join(dir_path, 'fixtures', 'test_file2.yaml')

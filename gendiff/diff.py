@@ -50,13 +50,10 @@ def format_diff(diff, format_name, depth=1):
         else:
             prefix = '    '
             real_key = key.strip()
-
         if isinstance(value, dict):
             formatted_value = format_diff(value, format_name, depth + 1)
-            
         else:
             if isinstance(value, str):
-
                 if value == "":
                     lines.append(f"{indent}{prefix}{real_key}:")
                     continue  # saltar agregar línea al final para no repetir
@@ -64,7 +61,7 @@ def format_diff(diff, format_name, depth=1):
                     formatted_value = value
             else:
                 formatted_value = json.dumps(value)
-
+        
         lines.append(f"{indent}{prefix}{real_key}: {formatted_value}")
 
     lines.append(indent + '}')
