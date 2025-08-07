@@ -58,6 +58,6 @@ def format_diff(dict, format_name, depth=1):
     if format_name == 'stylish':
         return format_stylish(dict, depth)
     elif format_name == 'plain':
-        return format_plain(dict, depth)
+        return format_plain(dict)
     else:
         return json.dumps(dict, indent=4)

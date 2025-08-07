@@ -181,23 +181,20 @@ def test_script_run():
     assert result.stdout.strip() == expected.strip()
 
 
-# def test_format_plain():
-#     dir_path = os.path.dirname(__file__)
-#     file1 = os.path.join(dir_path, 'fixtures', 'test_file1.json')
-#     file2 = os.path.join(dir_path, 'fixtures', 'test_file2.json')
-#     expected = '''
-#     gendiff --format plain archivo1.json archivo2.json
-#     Property 'common.follow' was added with value: false
-#     Property 'common.setting2' was removed
-#     Property 'common.setting3' was updated. From true to null
-#     Property 'common.setting4' was added with value: 'blah blah'
-#     Property 'common.setting5' was added with value: [complex value]
-#     Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
-#     Property 'common.setting6.ops' was added with value: 'vops'
-#     Property 'group1.baz' was updated. From 'bas' to 'bars'
-#     Property 'group1.nest' was updated. From [complex value] to 'str'
-#     Property 'group2' was removed
-#     Property 'group3' was added with value: [complex value]
-#     '''
-#     result = generate_diff(file1, file2, 'plain')
-#     assert result == expected
+def test_format_plain():
+    dir_path = os.path.dirname(__file__)
+    file1 = os.path.join(dir_path, 'fixtures', 'test_file1.json')
+    file2 = os.path.join(dir_path, 'fixtures', 'test_file2.json')
+    expected = """Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]"""
+    result = generate_diff(file1, file2, 'plain')
+    assert result == expected
