@@ -13,4 +13,4 @@ check:
 	poetry run pytest
 	
 run-diff:
-	python -m gendiff.scripts.gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format plain
+	python -m gendiff.scripts.gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format json

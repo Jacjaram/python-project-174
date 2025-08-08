@@ -1,7 +1,7 @@
 from gendiff.parser import parse_file
-import json
 from formatters.stylish import format_stylish
 from formatters.plain import format_plain
+from formatters.json import format_json
 
 
 def generate_diff(file_path1, file_path2, format_name='stylish'):
@@ -60,4 +60,4 @@ def format_diff(dict, format_name, depth=1):
     elif format_name == 'plain':
         return format_plain(dict)
     else:
-        return json.dumps(dict, indent=4)
+        return format_json(dict)

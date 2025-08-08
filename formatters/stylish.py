@@ -12,7 +12,8 @@ def format_value(value, depth=1):
         return "null"
     else:
         return str(value)
-    
+
+
 def format_stylish(diff, depth=1):
     indent = '    ' * (depth - 1)
     lines = ['{']

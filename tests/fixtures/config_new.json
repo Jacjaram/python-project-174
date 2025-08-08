@@ -1,0 +1,10 @@
+{
+  "version": "1.1",
+  "enabled": false,
+  "timeout": 120,
+  "servers": {
+    "alpha": "10.0.0.1",
+    "gamma": "10.0.0.3"
+  },
+  "debug": true
+}
