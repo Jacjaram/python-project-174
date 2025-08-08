@@ -18,9 +18,14 @@ git clone https://github.com/Jacjaram/python-project-174.git
 cd python-project-174
 poetry install# trigger
 
-# 📽 Ejemplo de uso
+# 📽 Ejemplo de uso formato stylish
 
 [![asciicast](https://asciinema.org/a/96TApEsGfutmM54f7i9T1VkzM.svg)](https://asciinema.org/a/96TApEsGfutmM54f7i9T1VkzM)
+
+## 🎥 Ejemplo formato plain
+
+[![asciicast](https://asciinema.org/a/GraIsrAgWEcUgf9C7yj3Bn1yn.svg)](https://asciinema.org/a/GraIsrAgWEcUgf9C7yj3Bn1yn)
+
 
 ```bash
 $ gendiff file1.json file2.json
