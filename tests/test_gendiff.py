@@ -20,7 +20,7 @@ def test_generate_diff():
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value
@@ -63,7 +63,7 @@ def test_equal():
         setting3: true
         setting6: {
             doge: {
-                wow:
+                wow: 
             }
             key: value
         }
@@ -100,7 +100,7 @@ def test_yaml_generate_diff():
         setting3: true
         setting6: {
             doge: {
-                wow:
+                wow: 
             }
             key: value
         }
@@ -140,7 +140,7 @@ def test_script_run():
         }
         setting6: {
             doge: {
-              - wow:
+              - wow: 
               + wow: so much
             }
             key: value
