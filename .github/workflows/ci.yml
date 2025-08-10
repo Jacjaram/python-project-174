@@ -1,50 +1,55 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - master
   pull_request:
-    branches: [main]
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
 
-    - name: Disable poetry virtualenv creation
-      run: poetry config virtualenvs.create false
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-    - name: Install dependencies
-      run: make install
+      - name: Configure Poetry to not create virtualenvs
+        run: poetry config virtualenvs.create false
 
-    - name: Run lint
-      run: make lint
+      - name: Install dependencies
+        run: make install
 
-    - name: Run tests with coverage
-      run: make test-coverage
+      - name: Run linter
+        run: make lint
 
-    - name: Upload coverage to CodeClimate
-      uses: paambaati/codeclimate-action@v3.0.0
-      with:
-        coverageCommand: 'make test-coverage'
-        coverageLocations: 'coverage.xml'
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - name: Run tests with coverage
+        run: make test-coverage
 
-    - name: Upload coverage artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage.xml
+      - name: Upload coverage to CodeClimate
+        uses: paambaati/codeclimate-action@v3.0.0
+        with:
+          coverageCommand: 'make test-coverage'
+          coverageLocations: 'coverage.xml'
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
-    - name: Run CLI diff command test
-      run: make run-diff
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
 
+      - name: Run CLI diff command test
+        run: make run-diff
