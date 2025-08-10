@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
@@ -7,35 +7,35 @@ on:
   pull_request:
 
 jobs:
-  lint-test-coverage:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.12
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        poetry install
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
 
-    - name: Run linter
-      run: make lint
+      - name: Run linter
+        run: make lint
 
-    - name: Run tests with coverage
-      run: poetry run pytest --cov=gendiff --cov-report=lcov:target/lcov.info
+      - name: Run tests with coverage
+        run: poetry run pytest --cov=gendiff --cov-report=xml
 
-    - name: Upload coverage report to Qlty
-      uses: qltysh/qlty-action/coverage@v2
-      with:
-        token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-        files: target/lcov.info
+      - name: Upload coverage to CodeClimate
+        uses: codeclimate/test-reporter-action@v1
+        with:
+          coverage-input-type: 'coverage.py'
+          coverage-reports: './coverage.xml'
+          repo-token: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
 
 # name: Python CI
 
