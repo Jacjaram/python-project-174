@@ -5,15 +5,18 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  test:
+  build-test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
           python-version: 3.12
@@ -22,61 +25,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install poetry
-          poetry install
+          poetry config virtualenvs.create false
+          poetry install --no-interaction --no-ansi
 
       - name: Run linter
         run: make lint
 
       - name: Run tests with coverage
-        run: poetry run pytest --cov=gendiff --cov-report=xml
+        run: make test-coverage
 
       - name: Upload coverage to CodeClimate
-        uses: codeclimate/test-reporter-action@v1
+        uses: paambaati/codeclimate-action@v3.0.0
         with:
-          coverage-input-type: 'coverage.py'
-          coverage-reports: './coverage.xml'
-          repo-token: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          coverageCommand: 'pytest --cov=gendiff --cov-report=xml:coverage.xml'
+          coverageLocations: 'coverage.xml'
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
-# name: Python CI
+      - name: Upload coverage artifact (optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml
 
-# on: [push, pull_request]
-
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-#     env:
-#       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-    
-#     steps:
-#       - uses: actions/checkout@v4
-      
-#       - name: Set up Python
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: '3.12'
-#       - name: Install Poetry
-#         uses: snok/install-poetry@v1
-#         with:
-#           virtualenvs-create: true
-#           virtualenvs-in-project: true
-      
-#       - name: Install dependencies
-#         run: |
-#           pip install uv
-#           poetry install
-
-#       - name: Setup Code Climate reporter
-#         run: |
-#           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-#           chmod +x ./cc-test-reporter
-#           ./cc-test-reporter before-build
-
-#       - name: Run tests with coverage
-#         run: |
-#           poetry run pytest --cov=gendiff --cov-report=xml:coverage.xml
-#           ./cc-test-reporter format-coverage -t cobertura coverage.xml
-#           ./cc-test-reporter after-build --exit-code $?
-
-#       - name: Run linter
-#         run: make lint
 
