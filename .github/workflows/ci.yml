@@ -1,4 +1,4 @@
-name: CI
+name: Python package
 
 on:
   push:
@@ -11,31 +11,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
 
-      - name: Install Poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+    - name: Install dependencies
+      run: poetry install
 
-      - name: Install dependencies
-        run: poetry install
+    - name: Run tests and generate coverage
+      run: make test-coverage
 
-      - name: Run tests and generate coverage report
-        run: make test-coverage
+    - name: Debug print token length
+      run: echo "${{ secrets.CC_TEST_REPORTER_ID }}" | wc -c
 
-      - name: Upload coverage to CodeClimate
-        uses: paambaati/codeclimate-action@v3.0.0
-        with:
-          coverageCommand: 'make test-coverage'
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    - name: Upload coverage to CodeClimate
+      uses: paambaati/codeclimate-action@v3.0.0
+      with:
+        coverageCommand: 'make test-coverage'
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
 # name: CI
 
 # on:
