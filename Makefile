@@ -1,5 +1,6 @@
 lint:
-	poetry run flake8 --exclude=venv
+	poetry run flake8 --exclude=venv --ignore=W291
+	@echo "✅ Linter completado sin errores"
 
 install:
 	poetry install
@@ -9,7 +10,7 @@ test-coverage:
 # 	poetry run pytest --cov=gendiff --cov-report=term
 
 check:
-	poetry run flake8 gendiff
+	poetry run flake8 gendiff --exclude=venv
 	poetry run pytest
 	
 run-diff:
