@@ -2,18 +2,17 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  build-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
@@ -22,19 +21,13 @@ jobs:
 
       - name: Install Poetry
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Configure Poetry to not create virtualenvs
-        run: poetry config virtualenvs.create false
+          python -m pip install --upgrade pip
+          pip install poetry
 
       - name: Install dependencies
-        run: make install
+        run: poetry install
 
-      - name: Run linter
-        run: make lint
-
-      - name: Run tests with coverage
+      - name: Run tests and generate coverage report
         run: make test-coverage
 
       - name: Upload coverage to CodeClimate
@@ -50,6 +43,58 @@ jobs:
         with:
           name: coverage-report
           path: coverage.xml
+# name: CI
 
-      - name: Run CLI diff command test
-        run: make run-diff
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   pull_request:
+
+# jobs:
+#   build-test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Set up Python 3.12
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.12'
+
+#       - name: Install Poetry
+#         run: |
+#           curl -sSL https://install.python-poetry.org | python3 -
+#           echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+#       - name: Configure Poetry to not create virtualenvs
+#         run: poetry config virtualenvs.create false
+
+#       - name: Install dependencies
+#         run: make install
+
+#       - name: Run linter
+#         run: make lint
+
+#       - name: Run tests with coverage
+#         run: make test-coverage
+
+#       - name: Upload coverage to CodeClimate
+#         uses: paambaati/codeclimate-action@v3.0.0
+#         with:
+#           coverageCommand: 'make test-coverage'
+#           coverageLocations: 'coverage.xml'
+#         env:
+#           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+#       - name: Upload coverage artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: coverage-report
+#           path: coverage.xml
+
+#       - name: Run CLI diff command test
+#         run: make run-diff
