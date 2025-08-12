@@ -39,6 +39,15 @@ jobs:
 
       - name: Run tests and generate coverage
         run: poetry run pytest --cov=gendiff --cov-report=xml
+      
+      - name: Check CC_TEST_REPORTER_ID secret
+        run: |
+          if [ -z "${{ secrets.CC_TEST_REPORTER_ID }}" ]; then
+            echo "Secret CC_TEST_REPORTER_ID is NOT set"
+            exit 1
+          else
+            echo "Secret CC_TEST_REPORTER_ID is set"
+          fi
 
       - name: Publish coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
