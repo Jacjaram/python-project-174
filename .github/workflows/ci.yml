@@ -36,9 +36,11 @@ jobs:
 
       - name: Run tests with coverage
         run: make test-coverage
-      
-      - name: Debug print token length
-        run: echo "${{ secrets.CC_TEST_REPORTER_ID }}" | wc -c
 
-      - name: List coverage files
-        run: ls -l coverage.xml
+      - name: Upload coverage to CodeClimate
+        uses: paambaati/codeclimate-action@v3.0.0
+        with:
+          coverageLocations: 'coverage.xml'
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
