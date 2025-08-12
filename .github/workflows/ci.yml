@@ -37,10 +37,13 @@ jobs:
       - name: Run tests with coverage
         run: make test-coverage
 
-      - name: Upload coverage to CodeClimate
+      - name: Run tests and generate coverage
+        run: poetry run pytest --cov=gendiff --cov-report=xml
+
+      - name: Publish coverage to Code Climate
         uses: paambaati/codeclimate-action@v3.0.0
-        with:
-          coverageLocations: 'coverage.xml'
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: coverage.xml:coverage.py
 
